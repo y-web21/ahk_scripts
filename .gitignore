@@ -1,0 +1,18 @@
+# ignore all files
+*
+!*/
+
+# include git files
+!.gitignore
+
+# includes
+!*.md
+!*.bat
+!main.ahk
+!VLCplayer.ahk
+
+# force excludes
+*private/
+*local.bat
+.bak
+.bak/
