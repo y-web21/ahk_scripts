@@ -1,12 +1,19 @@
-; 左右 Alt キーの空打ちで IME の OFF/ON を切り替える
-;
-; 左 Alt キーの空打ちで IME を「英数」に切り替え
-; 右 Alt キーの空打ちで IME を「かな」に切り替え
-; Alt キーを押している間に他のキーを打つと通常の Alt キーとして動作
-;
-; Author:     karakaram   http://www.karakaram.com/alt-ime-on-off
+#SingleInstance Force
+#Include %A_ScriptDir%
+#Include ./lib/eamat/IME.ahk
+debug := false ; true / false
+global KeyDownTickCount := 0
+GroupAdd, CtrlEscape, ahk_exe Code.exe
+GroupAdd, CtrlEscape, ahk_exe nvim-qt.exe
 
-#Include IME.ahk
+;--------------------------------------------------------------------------------
+; End of autoexecute section
+;--------------------------------------------------------------------------------
+;--------------------------------------------------------------------------------
+; End of class creation
+;--------------------------------------------------------------------------------
+; modfier キーの空打ちで IME の OFF/ON を切り替える
+; Original Author:     karakaram   http://www.karakaram.com/alt-ime-on-off
 
 ; Razer Synapseなど、キーカスタマイズ系のツールを併用しているときのエラー対策
 #MaxHotkeysPerInterval 350
@@ -91,7 +98,7 @@
 *~>::
 *~/::
 *~?::
-*~Esc::
+; *~Esc::
 *~Tab::
 *~Space::
 *~Left::
@@ -105,24 +112,51 @@
 *~End::
 *~PgUp::
 *~PgDn::
-    Return
+Return
 
 ; 上部メニューがアクティブになるのを抑制
-*~LAlt::Send {Blind}{vk07}
-*~RAlt::Send {Blind}{vk07}
+; LAlt::Send {Blind){vk07}
+; RAlt::Send (Blind){vk07)
 
-; 左 Alt 空打ちで IME を OFF
-LAlt up::
-    if (A_PriorHotkey == "*~LAlt")
-    {
-        IME_SET(0)
-    }
-    Return
+*~Esc::StartPressTimeMeasurement()
+*~LCtrl::StartPressTimeMeasurement()
+*~LShift::StartPressTimeMeasurement()
+*~RShift::StartPressTimeMeasurement()
 
-; 右 Alt 空打ちで IME を ON
-RAlt up::
-    if (A_PriorHotkey == "*~RAlt")
-    {
-        IME_SET(1)
+#If WinActive("ahk_group CtrlEscape")
+; 左Ctrl で IME OFF & Esc
+LCtrl up::IME_SET_WRAP("*~" . StrSplit(A_ThisHotkey, " ")[1], , , "Esc")
+#If
+Esc up::IME_SET_WRAP("*~" . StrSplit(A_ThisHotkey, " ")[1])
+; IME on/off when the shift key pressed alone
+LShift up::IME_SET_WRAP("*~" . StrSplit(A_ThisHotkey, " ")[1])
+RShift up::IME_SET_WRAP("*~" . StrSplit(A_ThisHotkey, " ")[1], 1)
+
+StartPressTimeMeasurement(){
+    if (KeyDownTickCount == 0)
+        KeyDownTickCount := A_TickCount
+}
+
+IME_SET_WRAP(hotkey, imeState := 0, threshold := 200, key := "") {
+    ; 長押しの場合は IME 切り替えを行わない。
+    global KeyDownTickCount
+    if (A_PriorHotkey != hotkey) {
+        KeyDownTickCount := 0
+        Return
     }
-    Return
+    Elapsed := A_TickCount - KeyDownTickCount
+    if (debug == true ) {
+        ToolTip % Elapsed
+    }
+    if (Elapsed > threshold) {
+        KeyDownTickCount := 0
+        Return
+    }
+    IME_SET(imeState)
+    if (key != "") {
+        SendEvent, {%key%}
+    }
+
+    KeyDownTickCount := 0
+}
+
