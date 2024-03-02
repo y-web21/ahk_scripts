@@ -9,6 +9,8 @@
 !*.md
 !*.bat
 !main.ahk
+!ime.ahk
+!lib\eamat\IME.ahk
 !VLCplayer.ahk
 
 # force excludes
