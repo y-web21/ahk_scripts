@@ -152,6 +152,7 @@ IME_SET_WRAP(hotkey, imeState := 0, threshold := 200, key := "") {
         KeyDownTickCount := 0
         Return
     }
+    IME_SET(!imeState)
     IME_SET(imeState)
     if (key != "") {
         SendEvent, {%key%}
