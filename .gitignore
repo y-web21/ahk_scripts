@@ -9,6 +9,7 @@
 !*.md
 !*.bat
 !main.ahk
+!main_v1.1.ahk
 !ime.ahk
 !lib\eamat\IME.ahk
 !VLCplayer.ahk
