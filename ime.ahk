@@ -124,20 +124,26 @@ Return
 *~RShift::StartPressTimeMeasurement()
 
 #If WinActive("ahk_group CtrlEscape")
-; 左Ctrl で IME OFF & Esc
-LCtrl up::IME_SET_WRAP("*~" . StrSplit(A_ThisHotkey, " ")[1], , , "Esc")
+    ; 左Ctrl で IME OFF & Esc
+    LCtrl up::IME_SET_WRAP("*~" . StrSplit(A_ThisHotkey, " ")[1], , , "Esc")
 #If
 Esc up::IME_SET_WRAP("*~" . StrSplit(A_ThisHotkey, " ")[1])
+; toggle IME
+LShift up::IME_TOGGLE("*~" . StrSplit(A_ThisHotkey, " ")[1])
 ; IME on/off when the shift key pressed alone
-LShift up::IME_SET_WRAP("*~" . StrSplit(A_ThisHotkey, " ")[1])
-RShift up::IME_SET_WRAP("*~" . StrSplit(A_ThisHotkey, " ")[1], 1)
+; LShift up::IME_SET_WRAP("*~" . StrSplit(A_ThisHotkey, " ")[1])
+; RShift up::IME_SET_WRAP("*~" . StrSplit(A_ThisHotkey, " ")[1], 1)
 
 StartPressTimeMeasurement(){
     if (KeyDownTickCount == 0)
         KeyDownTickCount := A_TickCount
 }
 
-IME_SET_WRAP(hotkey, imeState := 0, threshold := 200, key := "") {
+IME_TOGGLE(hotkey, threshold := 200, sendkey_aft_changed := "") {
+    IME_SET_WRAP(hotkey, !IME_GET(), threshold, sendkey_aft_changed)
+}
+
+IME_SET_WRAP(hotkey, imeState := 0, threshold := 200, sendkey_aft_changed := "") {
     ; 長押しの場合は IME 切り替えを行わない。
     global KeyDownTickCount
     if (A_PriorHotkey != hotkey) {
@@ -154,8 +160,8 @@ IME_SET_WRAP(hotkey, imeState := 0, threshold := 200, key := "") {
     }
     IME_SET(!imeState)
     IME_SET(imeState)
-    if (key != "") {
-        SendEvent, {%key%}
+    if (sendkey_aft_changed != "") {
+        SendEvent, {%sendkey_aft_changed%}
     }
 
     KeyDownTickCount := 0
