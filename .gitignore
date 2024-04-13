@@ -12,6 +12,7 @@
 !ime.ahk
 !lib\eamat\IME.ahk
 !VLCplayer.ahk
+!app/explorer.ahk
 
 # force excludes
 *private/
