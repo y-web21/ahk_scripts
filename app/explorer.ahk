@@ -15,12 +15,15 @@
 }
 
 ; LCtrl
-<^i:: SendEvent("^{f}{tab 4}")
 <^u:: SendEvent("!{up}")
 <^h:: SendEvent("!{left}")
 <^l:: SendEvent("!{right}")
-<^o:: SendInput("{Appskey}")
 
+<^j:: SendInput("{down}")
+<^k:: SendInput("{up}")
+
+<^i:: SendEvent("^{f}{tab 4}")
+<^o:: SendInput("{Appskey}")
 ^,:: SendInput("^{l}")
 ^+Enter:: SendInput("{F2}")
 

@@ -96,17 +96,6 @@ return
 ; LButton::LButton ; 他ウィンドウに左クリックで移ると押しっぱなしになるのでボツ
 #if
 
-;タスクバー上でホイール回転することで音量変更をする
-#If MouseIsOver("ahk_class Shell_TrayWnd")
-    WheelUp::Send {Volume_Up}
-    WheelDown::Send {Volume_Down}
-
-    MouseIsOver(WinTitle) {
-        MouseGetPos,,, Win
-        Return WinExist(WinTitle . " ahk_id " . Win)
-    }
-#If
-
 ;■実行中のスクリプトがもうひとつ起動されたとき、自動的に既存のプロセスを終了して新たに実行開始する。
 #SingleInstance Force
 
