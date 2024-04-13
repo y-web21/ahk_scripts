@@ -31,9 +31,8 @@ SysGet, monitor1, Monitor, 1
 Return
 
 ; #Include mousectrl.ahk
-#Include VLCplayer.ahk
+#Include app/VLCplayer.ahk
 #Include app/etc.ahk
-#Include app/explorer.ahk
 #Include temp.ahk
 
 ; ============================================
