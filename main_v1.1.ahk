@@ -1,6 +1,7 @@
 ;==================Auto Execution Area==================
 ;最初のReturnの出現で宣言部が終了してしまうため、まず読み込み。
 #include %A_ScriptDir% ;ここから下の#IncludeやFileInstallの基準パスを変更
+#SingleInstance Force
 
 #HotkeyInterval 1000    ;default 2000
 #MaxHotkeysPerInterval 100    ;????
@@ -31,7 +32,6 @@ SysGet, monitor1, Monitor, 1
 Return
 
 ; #Include mousectrl.ahk
-#Include app/VLCplayer.ahk
 #Include app/etc.ahk
 #Include temp.ahk
 
