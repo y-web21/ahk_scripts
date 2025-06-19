@@ -11,6 +11,7 @@
    1. [key list](#key-list)
    1. [send](#send)
    1. [operators](#operators)
+   1. [tools](#tools)
 
 ## Edit this Scriptのエディタを変更
 
@@ -62,3 +63,7 @@ https://www.autohotkey.com/docs/v2/lib/InputHook.htm
 ### operators
 
 [変数と式 - 定義と使用法｜AutoHotkey v2](https://ahkscript.github.io/ja/docs/v2/Variables.htm#Operators)
+
+### tools
+
+[Class ToolTipOptions - 2024-03-27 - AutoHotkey Community](https://www.autohotkey.com/boards/viewtopic.php?f=83&t=113308)
