@@ -1,111 +1,54 @@
 #Requires AutoHotkey v2.0+
 #SingleInstance Force
 
-#HotIf WinActive("ahk_exe explorer.exe")
-; LAlt cursor
-<!h:: {
-    if (A_PriorHotkey != "^g")
-        SendInput("{left}")
-}
-<!j:: SendInput("{down}")
-<!k:: SendInput("{up}")
-<!l:: {
-    if (A_PriorHotkey != "^g")
-        SendInput("{right}")
-}
 
+#HotIf WinActive("ahk_exe explorer.exe")
 ; LCtrl
 ; <^i:: SendEvent("!{up}")
-<^h:: SendEvent("!{left}")
-<^l:: SendEvent("!{right}")
+; <^h:: SendEvent("!{left}")
+; <^l:: SendEvent("!{right}")
 
-<^j:: SendInput("{down}")
-<^k:: SendInput("{up}")
-<^u:: SendInput("{PgUp}")
-<^d:: SendInput("{PgDn}")
-<^+j:: SendInput("+{down}")
-<^+k:: SendInput("+{up}")
+; <^j:: SendInput("{down}")
+; <^k:: SendInput("{up}")
+; <^u:: SendInput("{PgUp}")
+; <^d:: SendInput("{PgDn}")
+; <^+j:: SendInput("+{down}")
+; <^+k:: SendInput("+{up}")
+; <^+u:: SendInput("+{PgUp}")
+; <^+d:: SendInput("+{PgDn}")
+
+; ; <^i:: SendEvent("^{f}{tab 4}{Down}{Up}") ; conflict with google Japanese IME
+; <^o:: SendInput("{Appskey}")
+; <^;:: SendInput("^{l}")
+; <^<+Enter:: SendInput("{F2}")
+
+; <^r::SendEvent("{AppsKey}")
+
 <^+u:: SendInput("+{PgUp}")
-<^+d:: SendInput("+{PgDn}")
 
-<^i:: SendEvent("^{f}{tab 4}{Down}{Up}")
-<^o:: SendInput("{Appskey}")
-<^;:: SendInput("^{l}")
-<^<+Enter:: SendInput("{F2}")
+; <^+d::SendTextToAddressBar(EnvGet("UserProfile") . "\downloads")
+; <^+d::SendTextToAddressBar(GetPaths.get(GetPaths.folderId.downloads))
+<^+d::SendTextToAddressBar(GetPaths.downloads())
+<^+m::SendTextToAddressBar(GetPaths.desktop())
+<^+o::SendTextToAddressBar(GetPaths.home())
 
+SendTextToAddressBar(address){
+    SendEvent("^{l}")
+    Sleep(50)
+    SendEvent("^{a}{Bs}")
+    SendText(address)
+}
+
+<^.::SendEvent("^{f}{tab 4}{Down}{Up}")
 ; 2 stroke keybind
 <^,::
 {
-    ToolTip("
-    (
-        f = Focus main pane
-        g = home
-        G = end
-        H = Go HOME
-        l = Focus address bar
-        t = Add new tab current location
-        u = Go up
-        j,k = down,up
-    )")
-    ih := InputHook("C L1 T3.5 M", "{Esc}"), ih.Start(), ih.Wait()
-    if (ih.Input == "f") {
-        SendEvent("^{f}{tab 4}{Down}{Up}")
-    } else if (ih.Input == "g") {
-        SendEvent("{Home}")
-    } else if (ih.Input == "G") {
-        SendEvent("{End}")
-    } else if (ih.Input == "l") {
-        SendEvent("^{l}")
-    } else if (ih.Input == "t") {
-        SendEvent("^{l}")
-        Sleep(50)
-        SendEvent("^{a}^{c}")
-        Sleep(50)
-        SendEvent("^{t}")
-        Sleep(350)
-        SendEvent("^{l}")
-        Sleep(50)
-        SendEvent("^{v}{Enter}")
-        Sleep(550)
-        SendEvent("^{f}{tab 4}{Down}{Up}")
-    } else if (ih.Input == "H") {
-        SendEvent("^{l}")
-        Sleep(50)
-        SendEvent("^{a}{Bs}")
-        SendText(EnvGet("UserProfile"))
-    } else if (ih.Input == "u" || ih.Input == "h" || ih.Input == "l" || ih.Input == "o"
-        || ih.Input == "j" || ih.Input == "k") {
-            while true {
-                secondKey := ih.Input
-                if (secondKey == "j") {
-                    SendInput("{Down}")
-                } else if (secondKey == "k") {
-                    SendInput("{Up}")
-                } else if (secondKey == "u") {
-                    SendEvent("!{Up}")
-                } else if (secondKey == "h") {
-                    SendEvent("!{Left}")
-                } else if (secondKey == "l") {
-                    SendEvent("!{Right}")
-                } else if (secondKey == "o") {
-                    SendEvent("{Enter}")
-                }
-                ToolTip("
-                (
-                    o = open
-                    u = go up
-                    h = go previous
-                    l = go forward
-                    j,k = down,up
-                )")
-                ih := InputHook("C L1 T3.5 M", "{Esc}"), ih.Start(), ih.Wait()
-                if (ih.Input != "u" && ih.Input != "h" && ih.Input != "l" && ih.Input != "o"
-                    && ih.Input != "j" && ih.Input != "k")
-                    break
-            }
-    }
-    ToolTip("")
-    Return
+    SendEvent("!{d}")
+    ; SendEvent("^{l}")
+    ; ih := InputHook("C L1 T3.5 M", "{Esc}"), ih.Start(), ih.Wait()
+    ; if (ih.Input == "m") {
+        ; SendEvent("^{f}{tab 4}{Down}{Up}")
+    ; }
 }
 >^g::
 { ; V1toV2: Added bracket
